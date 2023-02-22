@@ -1,0 +1,21 @@
+﻿@page
+@model testing.Pages.IndexModel
+@{
+}
+
+@if(Model.contains){
+    <p>Result is @Model.result with row id of @Model.rowId</p>
+}
+
+
+<div class="container">
+    <form method="post">
+        <label for="numOne">Number one</label><br />
+        <input type="text" id="numOne" name="numberOne" /><br />
+
+        <label for="numTwo">Number two</label><br />
+        <input type="text" id="numTwo" name="numberTwo" /><br />
+
+        <input type="submit" value="Submit" />
+    </form>
+</div>
