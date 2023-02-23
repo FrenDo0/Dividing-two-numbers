@@ -3,10 +3,17 @@
 @{
 }
 
-@if(Model.contains){
-    <p>Result is @Model.result with row id of @Model.rowId</p>
+@if (Model.errorMessage == null)
+{
+    if (Model.contains)
+    {
+        <p>Result is @Model.result with row id of @Model.rowId</p>
+    }
 }
-
+else
+{
+    <p>@Model.errorMessage</p>
+}
 
 <div class="container">
     <form method="post">

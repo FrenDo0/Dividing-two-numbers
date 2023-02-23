@@ -10,12 +10,13 @@ namespace testing.Pages
 {
     public class IndexModel : PageModel
     {
-        public Boolean contains = false;
+        public bool contains = false;
         public double numberOne = 0;
         public double numberTwo = 0;
         public double result = 0;
         public int rowId = 0;
         public String connectionString = "Data Source=.\\tew_sqlexpress;Initial Catalog=storeNumbers;Integrated Security=True";
+        public String errorMessage = null;
         public void OnGet()
         {
         }
@@ -23,15 +24,22 @@ namespace testing.Pages
         public void OnPost()
         {
             contains = true;
-            numberOne = double.Parse(Request.Form["numberOne"]);
-            numberTwo = double.Parse(Request.Form["numberTwo"]);
-
-            if(numberOne.ToString().Length == 0 || numberTwo.ToString().Length == 0)
+            String numOneStr = Request.Form["numberOne"];
+            String numTwoStr = Request.Form["numberTwo"];
+            bool checkOne = double.TryParse(numOneStr, out numberOne);
+            bool checkTwo = double.TryParse(numTwoStr, out numberTwo);
+            if (numberOne.ToString().Length == 0 || numberTwo.ToString().Length == 0)
             {
-                Console.WriteLine("enter numbers");
+                errorMessage = "All fields are required !";
+            }else if (checkOne != true || checkTwo != true)
+            {
+                errorMessage = "Enter only numbers !";
             }
             else
             {
+                numberOne = double.Parse(Request.Form["numberOne"]);
+                numberTwo = double.Parse(Request.Form["numberTwo"]);
+
                 rowId = selectId(numberOne, numberTwo);
                 if(rowId != 0)
                 {
@@ -65,7 +73,7 @@ namespace testing.Pages
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Something went wrong in insert method");
+                Console.WriteLine("Sql exception in insert method");
             }
         }
         public int selectId(double numOne,double numTwo)
@@ -96,7 +104,7 @@ namespace testing.Pages
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Something went wrong in insert method");
+                Console.WriteLine("Sql exception in select method");
             }
             return id;
         }
